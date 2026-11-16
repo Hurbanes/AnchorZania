@@ -66,10 +66,10 @@ nav{
   position:fixed;bottom:0;left:0;right:0;z-index:50;
   max-width:520px;margin:0 auto;background:rgba(255,255,255,.96);
   backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);
-  border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);
   padding-bottom:var(--safe-b)
 }
-nav button{padding:9px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mute);font-size:10.5px;font-weight:600;letter-spacing:.02em}
+nav button{padding:9px 1px 7px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mute);font-size:10px;font-weight:600;letter-spacing:0}
 nav button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--wine)}
 nav button.on svg{stroke-width:2}
@@ -140,6 +140,10 @@ a.btn{text-decoration:none}
 .li .calc{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline;font-size:14px}
 .li .calc .k{color:var(--mute);font-size:12.5px}
 .li .calc .v{font-weight:700;font-variant-numeric:tabular-nums}
+.capbar{margin-top:9px;padding:9px 11px;border-radius:9px;font-size:12.5px;line-height:1.4}
+.capbar.ok{background:#EEF6F1;border:1px solid #CFE6DA;color:#1F6F4A}
+.capbar.full{background:#FFF7E6;border:1px solid #F0DCAE;color:#7A5800}
+.capbar.over{background:#FDEDEE;border:1px solid #F2C9CD;color:#9B1B28}
 
 /* ============ TOTAL BAR ============ */
 .totbar{
@@ -173,6 +177,59 @@ a.btn{text-decoration:none}
 .pick .t{font-weight:650;font-size:15px}
 .pick .s{font-size:12.5px;color:var(--mute);margin-top:1px}
 .pick .r{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ============ DIARY ============ */
+.wknav{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.wknav button{width:42px;height:42px;border-radius:11px;background:var(--paper);
+  border:1px solid var(--line);display:grid;place-items:center;color:var(--wine);flex:none}
+.wknav button:active{background:var(--sand)}
+.wknav button svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.wklab{flex:1;text-align:center;min-width:0}
+.wklab b{display:block;font-size:15.5px;font-weight:700;line-height:1.2}
+.wklab span{display:block;font-size:12px;color:var(--mute);margin-top:2px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:10px;overflow:hidden;box-shadow:var(--sh)}
+.day.empty{background:transparent;box-shadow:none;border-style:dashed}
+.day .dh{display:flex;align-items:center;gap:10px;padding:11px 13px;border-bottom:1px solid var(--line)}
+.day.empty .dh{border-bottom:0}
+.day .dh .dd{font-weight:700;font-size:14.5px}
+.day .dh .dd small{display:block;font-weight:400;font-size:11.5px;color:var(--mute);letter-spacing:.03em;text-transform:uppercase;margin-top:1px}
+.day .dh .sp{flex:1}
+.day .dh .tally{font-size:11.5px;font-weight:700;padding:4px 9px;border-radius:999px;white-space:nowrap}
+.day .dh .tally.ok{background:#EEF6F1;color:#1F6F4A}
+.day .dh .tally.full{background:#FFF7E6;color:#7A5800}
+.day .dh .tally.over{background:#FDEDEE;color:#9B1B28}
+.day .bk{display:flex;align-items:center;gap:11px;padding:10px 13px;border-bottom:1px solid #F3EDE5;width:100%;text-align:left}
+.day .bk:last-child{border-bottom:0}
+.day .bk:active{background:#FFFBF8}
+.day .bk .mn{flex:1;min-width:0}
+.day .bk .t{font-weight:650;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day .bk .s{font-size:12px;color:var(--mute);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day .bk .q{font-weight:700;font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.day .none{padding:12px 13px;font-size:13px;color:var(--mute)}
+.tot2{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid #F3EDE5}
+.tot2:last-child{border-bottom:0}
+.tot2 .v{font-weight:700;font-variant-numeric:tabular-nums}
+
+/* report document */
+.doc.rep .dh{border-bottom-color:#1a1a1a}
+.doc.rep .dh .co .nm{color:var(--wine)}
+.doc.rep thead th{background:#2C2724}
+.doc .rday{margin-top:16px;break-inside:avoid;page-break-inside:avoid}
+.doc .rday .rh{display:flex;align-items:baseline;gap:10px;padding:6px 0 5px;border-bottom:1.5px solid #E6DED4}
+.doc .rday .rh .d{font-size:13px;font-weight:800}
+.doc .rday .rh .sp{flex:1}
+.doc .rday .rh .ct{font-size:11px;font-weight:700}
+.doc .rday .rh .ct.over{color:#9B1B28}
+.doc .rday .rh .ct.ok{color:#666}
+.doc .rday table{margin-top:0}
+.doc .rday tbody td{padding:7px 10px;font-size:11.5px}
+.doc .rday .norow{padding:8px 10px;font-size:11px;color:#AAA;font-style:italic}
+.doc .sum{margin-top:20px;border:1px solid #E6DED4;border-radius:6px;overflow:hidden}
+.doc .sum .sh{background:#FAF6F0;padding:7px 12px;font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#8A7A68;border-bottom:1px solid #E6DED4}
+.doc .sum .sr{display:flex;justify-content:space-between;padding:7px 12px;font-size:12px;border-bottom:1px solid #F3EDE5}
+.doc .sum .sr:last-child{border-bottom:0}
+.doc .sum .sr b{font-weight:700;font-variant-numeric:tabular-nums}
 
 /* ============ TOAST ============ */
 #toast{
@@ -390,6 +447,27 @@ a.btn{text-decoration:none}
       </div>
     </section>
 
+    <!-- ======= DIARY ======= -->
+    <section id="v-diary" class="view hide">
+      <div class="wknav">
+        <button id="wkPrev" aria-label="Previous week">
+          <svg viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg></button>
+        <div class="wklab"><b id="wkRange">—</b><span id="wkSub">—</span></div>
+        <button id="wkNext" aria-label="Next week">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+      <button class="btn sand sm" id="wkToday" style="width:100%;margin-bottom:14px">This week</button>
+
+      <div id="wkDays"></div>
+
+      <div class="card" id="wkTotals"></div>
+
+      <button class="btn block" id="wkReport">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>
+        Open printable report
+      </button>
+    </section>
+
     <!-- ======= CUSTOMERS ======= -->
     <section id="v-cust" class="view hide">
       <button class="btn block" id="btnAddCust" style="margin-bottom:16px">
@@ -488,7 +566,9 @@ a.btn{text-decoration:none}
 
   <nav>
     <button data-go="home" class="on">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Documents</button>
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Docs</button>
+    <button data-go="diary">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="17" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Diary</button>
     <button data-go="cust">
       <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/></svg>Customers</button>
     <button data-go="items">
@@ -578,8 +658,8 @@ var DEFAULTS = {
            "Please use the invoice number as your payment reference."
   },
   items:[
-    {id:"i1", name:"Cattle Slaughtering Booking",      sub:"Large stock", rate:350, real:false, img:"bull"},
-    {id:"i2", name:"Small Stock Slaughtering Booking", sub:"Goats / sheep", rate:120, real:true,  img:"goat"}
+    {id:"i1", name:"Cattle Slaughtering Booking",      sub:"Large stock",   rate:350, real:false, img:"bull", cap:10},
+    {id:"i2", name:"Small Stock Slaughtering Booking", sub:"Goats / sheep", rate:120, real:true,  img:"goat", cap:0}
   ],
   customers:[],
   quotas:[],
@@ -676,6 +756,57 @@ function padNo(n){
 function quotaNo(n){ return (DB.settings.qPrefix || "QT-")  + padNo(n); }
 function invNo(n){   return (DB.settings.iPrefix || "INV-") + padNo(n); }
 
+/* =====================================================================
+   CAPACITY
+   A booking consumes capacity on its SLAUGHTERING date.
+   Each item carries its own daily limit; cap 0 (or missing) = unlimited.
+   ===================================================================== */
+function itemByName(nm){
+  return DB.items.filter(function(p){ return p.name === nm; })[0] || null;
+}
+function capOf(nm){
+  var m = itemByName(nm);
+  return m ? num(m.cap) : 0;          // 0 => uncapped
+}
+/* Animals of `nm` already booked to be slaughtered on `iso`,
+   ignoring the quota we're currently editing. */
+function bookedOn(iso, nm, skipId){
+  if(!iso || !nm) return 0;
+  var n = 0;
+  DB.quotas.forEach(function(q){
+    if(skipId && q.id === skipId) return;
+    q.items.forEach(function(it){
+      if(it.slaughter === iso && it.name === nm) n += num(it.qty);
+    });
+  });
+  return n;
+}
+/* Capacity picture for one draft line, including the other lines of the
+   same draft that share its date and item. */
+function lineCapacity(i){
+  var it = draft.items[i];
+  if(!it) return null;
+  var cap = capOf(it.name);
+  if(cap <= 0 || !it.slaughter) return null;
+  var others = 0;
+  draft.items.forEach(function(o, j){
+    if(j !== i && o.name === it.name && o.slaughter === it.slaughter) others += num(o.qty);
+  });
+  var existing = bookedOn(it.slaughter, it.name, draft.id);
+  var used = existing + others;
+  var mine = num(it.qty);
+  return {cap:cap, existing:existing, used:used, mine:mine,
+          total:used + mine, left:cap - used - mine, over:(used + mine) > cap};
+}
+function capacityBreaches(){
+  var out = [];
+  draft.items.forEach(function(it, i){
+    var c = lineCapacity(i);
+    if(c && c.over) out.push({name:it.name, date:it.slaughter, c:c});
+  });
+  return out;
+}
+
 var toastT;
 function toast(msg){
   var el = $("#toast");
@@ -761,8 +892,121 @@ function renderDocs(){
   });
 }
 
+/* =====================================================================
+   DIARY  — what's booked, by slaughtering day
+   ===================================================================== */
+var DAYNAMES = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+var wkAnchor = today();
+
+function isoOf(d){
+  var p = function(x){ return (x<10?"0":"")+x; };
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());
+}
+function weekStart(iso){
+  var d = new Date(iso + "T00:00:00");
+  var dow = (d.getDay() + 6) % 7;        // 0 = Monday
+  d.setDate(d.getDate() - dow);
+  return isoOf(d);
+}
+function weekDays(iso){
+  var s = weekStart(iso), out = [];
+  for(var i = 0; i < 7; i++) out.push(addDays(s, i));
+  return out;
+}
+/* Every quota line slaughtering on `iso`. */
+function bookingsOn(iso){
+  var out = [];
+  DB.quotas.forEach(function(q){
+    q.items.forEach(function(it){
+      if(it.slaughter === iso) out.push({q:q, it:it});
+    });
+  });
+  return out.sort(function(a,b){ return (a.q.createdAt||0) - (b.q.createdAt||0); });
+}
+/* Per-item tallies for a day: [{name, qty, cap, over}] */
+function tallyOn(iso){
+  var map = {};
+  bookingsOn(iso).forEach(function(r){
+    if(!map[r.it.name]) map[r.it.name] = {name:r.it.name, qty:0, cap:capOf(r.it.name)};
+    map[r.it.name].qty += num(r.it.qty);
+  });
+  return Object.keys(map).map(function(k){
+    var t = map[k];
+    t.over = t.cap > 0 && t.qty > t.cap;
+    t.full = t.cap > 0 && t.qty >= t.cap;
+    return t;
+  });
+}
+
+function renderDiary(){
+  var days = weekDays(wkAnchor), s = days[0], e = days[6];
+  var sameMonth = s.slice(0,7) === e.slice(0,7);
+  $("#wkRange").textContent = sameMonth
+    ? parseInt(s.slice(8),10) + "–" + shortDate(e)
+    : shortDate(s) + " – " + shortDate(e);
+  var isThis = weekStart(today()) === s;
+  $("#wkSub").textContent = isThis ? "This week" : "Week of " + shortDate(s);
+  $("#wkToday").classList.toggle("hide", isThis);
+
+  var grand = {};
+  $("#wkDays").innerHTML = days.map(function(iso){
+    var bk = bookingsOn(iso), tal = tallyOn(iso);
+    tal.forEach(function(t){ grand[t.name] = (grand[t.name]||0) + t.qty; });
+
+    var dow = DAYNAMES[(new Date(iso+"T00:00:00").getDay() + 6) % 7];
+    var isToday = iso === today();
+
+    var tally = tal.map(function(t){
+      var cls = t.over ? "over" : (t.full ? "full" : "ok");
+      var txt = t.cap > 0 ? (t.qty + "/" + t.cap) : String(t.qty);
+      return '<span class="tally '+cls+'">'+esc(shortName(t.name))+' '+txt+'</span>';
+    }).join("");
+
+    if(!bk.length){
+      return '<div class="day empty"><div class="dh">'+
+        '<div class="dd">'+esc(dow)+'<small>'+esc(shortDate(iso))+
+          (isToday?' · today':'')+'</small></div>'+
+        '<div class="sp"></div><span class="none" style="padding:0;font-size:12.5px">Free</span>'+
+      '</div></div>';
+    }
+    return '<div class="day"><div class="dh">'+
+      '<div class="dd">'+esc(dow)+'<small>'+esc(shortDate(iso))+
+        (isToday?' · today':'')+'</small></div>'+
+      '<div class="sp"></div>'+tally+
+    '</div>'+
+    bk.map(function(r){
+      return '<button class="bk" data-q="'+r.q.id+'">'+
+        '<div class="mn"><div class="t">'+esc(r.q.cust.name || "(no customer)")+'</div>'+
+        '<div class="s">'+esc(r.q.number)+' · '+esc(r.it.name)+
+          (r.it.arrive ? ' · arrives '+esc(shortDate(r.it.arrive)) : '')+'</div></div>'+
+        '<div class="q">'+num(r.it.qty)+'</div></button>';
+    }).join("")+
+    '</div>';
+  }).join("");
+
+  var keys = Object.keys(grand);
+  $("#wkTotals").innerHTML = '<h2>Week total</h2>' + (keys.length
+    ? keys.map(function(k){
+        return '<div class="tot2"><span>'+esc(k)+'</span><span class="v">'+grand[k]+'</span></div>';
+      }).join("")
+    : '<div class="tot2"><span style="color:var(--mute)">Nothing booked this week</span></div>');
+
+  $$("#wkDays [data-q]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var q = DB.quotas.filter(function(x){ return x.id === b.dataset.q; })[0];
+      if(q) showDoc(q, true);
+    });
+  });
+}
+function shortName(nm){
+  return String(nm).replace(/\s*Slaughtering Booking\s*/i, "").trim() || nm;
+}
+$("#wkPrev").addEventListener("click", function(){ wkAnchor = addDays(weekStart(wkAnchor), -7); renderDiary(); });
+$("#wkNext").addEventListener("click", function(){ wkAnchor = addDays(weekStart(wkAnchor),  7); renderDiary(); });
+$("#wkToday").addEventListener("click", function(){ wkAnchor = today(); renderDiary(); });
+
 /* ---------- navigation ---------- */
-var VIEWS = ["home","build","cust","items","set"];
+var VIEWS = ["home","build","diary","cust","items","set"];
 function go(v){
   VIEWS.forEach(function(x){
     var el = $("#v-"+x);
@@ -773,6 +1017,7 @@ function go(v){
   });
   window.scrollTo(0,0);
   if(v === "home")  renderDocs();
+  if(v === "diary") renderDiary();
   if(v === "cust")  renderCustomers();
   if(v === "items") renderItemList();
   if(v === "set")   fillSettings();
@@ -853,6 +1098,27 @@ $("#bCustPick").addEventListener("change", function(){
   }
 });
 
+function capLineHTML(i){
+  var c = lineCapacity(i);
+  if(!c) return "";
+  var d = shortDate(draft.items[i].slaughter);
+  if(c.over){
+    return '<div class="capbar over"><b>Day full.</b> '+c.used+' of '+c.cap+
+      ' already booked for '+esc(d)+' — this line puts it '+(c.total-c.cap)+' over.</div>';
+  }
+  if(c.left <= 0){
+    return '<div class="capbar full"><b>Day now full.</b> '+c.total+' of '+c.cap+
+      ' booked for '+esc(d)+'.</div>';
+  }
+  return '<div class="capbar ok">'+c.total+' of '+c.cap+' booked for '+esc(d)+
+    ' · <b>'+c.left+' still free</b></div>';
+}
+function refreshCapacity(){
+  $$("#bItems [data-cap]").forEach(function(el){
+    el.innerHTML = capLineHTML(parseInt(el.dataset.cap,10));
+  });
+}
+
 function renderItems(){
   var box = $("#bItems"), isQ = draft.kind === "quota";
   if(!draft.items.length){
@@ -868,7 +1134,8 @@ function renderItems(){
             '<input data-f="arrive" type="date" value="'+esc(it.arrive||"")+'"></div>'+
           '<div class="fld"><label>Slaughtering date</label>'+
             '<input data-f="slaughter" type="date" value="'+esc(it.slaughter||"")+'"></div>'+
-        '</div>'
+        '</div>'+
+        '<div class="cap" data-cap="'+i+'">'+capLineHTML(i)+'</div>'
       : '<div class="row">'+
           '<div class="fld"><label>Quantity</label>'+
             '<input data-f="qty" type="number" inputmode="decimal" step="0.01" min="0" value="'+esc(it.qty)+'"></div>'+
@@ -909,6 +1176,7 @@ function renderItems(){
         var c = $(".calc .v", li);
         if(c) c.textContent = "P" + money(num(draft.items[i].qty) * num(draft.items[i].rate));
         updateTotal();
+        refreshCapacity();
       });
     });
   });
@@ -1137,11 +1405,125 @@ function docHTML(q){
     ' · '+(isQ?'Quota ':'Invoice ')+esc(q.number)+'</div>';
 }
 
+/* ---------- weekly report document ---------- */
+function reportHTML(anchor){
+  var s = DB.settings, days = weekDays(anchor), grand = {}, nBook = 0;
+
+  var body = days.map(function(iso){
+    var bk = bookingsOn(iso), tal = tallyOn(iso);
+    nBook += bk.length;
+    tal.forEach(function(t){ grand[t.name] = (grand[t.name]||0) + t.qty; });
+    var dow = DAYNAMES[(new Date(iso+"T00:00:00").getDay() + 6) % 7];
+
+    var ct = tal.map(function(t){
+      var txt = esc(t.name) + ": " + t.qty + (t.cap > 0 ? " of " + t.cap : "");
+      return '<span class="ct '+(t.over?"over":"ok")+'">'+txt+
+        (t.over ? "  (OVER)" : "")+'</span>';
+    }).join('<span style="color:#CCC">&nbsp;·&nbsp;</span>');
+
+    var rows = bk.map(function(r){
+      return '<tr>'+
+        '<td style="width:96px">'+esc(r.q.number)+'</td>'+
+        '<td><b>'+esc(r.q.cust.name || "—")+'</b>'+
+          (r.q.farmer && r.q.farmer.name ? ' <span style="color:#888">· '+esc(r.q.farmer.name)+'</span>' : '')+
+        '</td>'+
+        '<td>'+esc(r.it.name)+'</td>'+
+        '<td class="d" style="width:86px">'+(r.it.arrive ? esc(shortDate(r.it.arrive)) : '<span class="dash">—</span>')+'</td>'+
+        '<td class="q" style="width:54px">'+num(r.it.qty)+'</td>'+
+      '</tr>';
+    }).join("");
+
+    return '<div class="rday"><div class="rh">'+
+        '<span class="d">'+esc(dow)+' · '+esc(longDate(iso))+'</span>'+
+        '<span class="sp"></span>'+ct+
+      '</div>'+
+      (rows
+        ? '<table><tbody>'+rows+'</tbody></table>'
+        : '<div class="norow">No bookings</div>')+
+    '</div>';
+  }).join("");
+
+  var sum = Object.keys(grand).map(function(k){
+    return '<div class="sr"><span>'+esc(k)+'</span><b>'+grand[k]+'</b></div>';
+  }).join("") || '<div class="sr"><span style="color:#999">Nothing booked this week</span><b>0</b></div>';
+
+  return ''+
+  '<img class="wm" src="'+IMG.emblem+'" alt="">'+
+  '<div class="dh">'+
+    '<img class="mark" src="'+IMG.logo+'" alt="">'+
+    '<div class="co">'+
+      '<div class="nm">'+esc(s.name)+'</div>'+
+      '<div class="tr">'+esc(s.legal)+'</div>'+
+      '<div class="ad">'+esc(companyBlock())+'</div>'+
+    '</div>'+
+    '<div class="qz"><div class="lab" style="font-size:21px">BOOKING REPORT</div>'+
+      '<div class="no">Week of '+esc(shortDate(days[0]))+'</div>'+
+      '<div class="mt">'+esc(longDate(days[0]))+' – '+esc(longDate(days[6]))+'<br>'+
+        'Generated: '+esc(longDate(today()))+'<br>'+
+        nBook+(nBook===1?' booking':' bookings')+'</div>'+
+    '</div>'+
+  '</div>'+
+  body +
+  '<div class="sum"><div class="sh">Week totals — animals by type</div>'+sum+'</div>'+
+  '<div class="end">'+esc(s.name)+' · Booking report · '+
+    esc(shortDate(days[0]))+' to '+esc(shortDate(days[6]))+'</div>';
+}
+
+function reportWaText(anchor){
+  var s = DB.settings, days = weekDays(anchor), L = [], grand = {};
+  L.push("*" + s.name.toUpperCase() + "*");
+  L.push("*BOOKING REPORT*");
+  L.push(longDate(days[0]) + " – " + longDate(days[6]));
+  L.push("");
+  days.forEach(function(iso){
+    var bk = bookingsOn(iso);
+    var dow = DAYNAMES[(new Date(iso+"T00:00:00").getDay() + 6) % 7];
+    L.push("*" + dow.toUpperCase() + " " + shortDate(iso) + "*");
+    if(!bk.length){ L.push("   no bookings"); }
+    else bk.forEach(function(r){
+      grand[r.it.name] = (grand[r.it.name]||0) + num(r.it.qty);
+      L.push("   " + num(r.it.qty) + " x " + shortName(r.it.name) +
+             " — " + (r.q.cust.name || "—") + " (" + r.q.number + ")");
+    });
+    tallyOn(iso).forEach(function(t){
+      if(t.over) L.push("   !! OVER LIMIT: " + t.qty + " of " + t.cap);
+    });
+    L.push("");
+  });
+  L.push("-------------------------");
+  L.push("*WEEK TOTALS*");
+  var ks = Object.keys(grand);
+  if(!ks.length) L.push("Nothing booked");
+  else ks.forEach(function(k){ L.push(k + ": " + grand[k]); });
+  return L.join("\n");
+}
+
 function applyZoom(){ $("#doc").style.setProperty("--z", zoom); }
+
+/* The weekly report reuses the document viewer, minus the save/convert actions. */
+function showReport(){
+  shown = null; saved = true; fromBuilder = false; reportAnchor = wkAnchor;
+  $("#doc").className = "doc rep";
+  $("#doc").innerHTML = reportHTML(wkAnchor);
+  $("#docTitle").textContent = "Booking report";
+  $("#actSave").classList.add("hide");
+  $("#actToInv").classList.add("hide");
+  $("#actWa").setAttribute("href",
+    "https://wa.me/?text=" + encodeURIComponent(reportWaText(wkAnchor)));
+  var avail = Math.min(window.innerWidth, 520) - 28;
+  zoom = Math.max(0.3, Math.min(1, avail / 794));
+  applyZoom();
+  $("#docwrap").classList.add("on");
+  $("#docscroll").scrollTop = 0;
+  document.body.style.overflow = "hidden";
+}
+var reportAnchor = null;
+$("#wkReport").addEventListener("click", showReport);
 
 function showDoc(q, alreadySaved){
   shown = q; saved = !!alreadySaved;
   fromBuilder = !alreadySaved;   // previewing something just built
+  reportAnchor = null;
   var isQ = q.kind === "quota";
   $("#doc").className = "doc" + (isQ ? "" : " inv");
   $("#doc").innerHTML = docHTML(q);
@@ -1180,6 +1562,18 @@ $("#docZoomOut").addEventListener("click", function(){
 $("#btnPreview").addEventListener("click", function(){
   if(!draft.cust.name.trim()){ toast("Enter a customer name first"); $("#bCustName").focus(); return; }
   if(!draft.items.length){ toast("Add at least one item"); return; }
+  // Over the daily limit? Say so plainly, but let the owner decide.
+  var br = capacityBreaches();
+  if(br.length){
+    var msg = "This booking goes over the daily limit:\n\n" +
+      br.map(function(b){
+        return "• " + b.name + " on " + shortDate(b.date) + "\n" +
+               "   " + b.c.total + " animals against a limit of " + b.c.cap +
+               "  (" + (b.c.total - b.c.cap) + " over)";
+      }).join("\n") +
+      "\n\nCarry on anyway?";
+    if(!confirm(msg)) return;
+  }
   showDoc(buildDocObject(), false);
 });
 
@@ -1323,8 +1717,8 @@ $("#actWa").addEventListener("click", function(){
 
 /* ---------- PDF ---------- */
 $("#actPdf").addEventListener("click", function(){
-  if(!shown) return;
-  if(!saved){ persistDoc(); renderDocs(); }
+  if(!shown && !reportAnchor) return;          // reportAnchor set => weekly report
+  if(shown && !saved){ persistDoc(); renderDocs(); }
   toast("Choose “Save as PDF” in the print screen");
   setTimeout(function(){ window.print(); }, 450);
 });
@@ -1397,7 +1791,9 @@ function renderItemList(){
       '<div class="mn"><div class="t">'+esc(p.name)+'</div>'+
       '<div class="s"><span class="txt">'+esc(p.sub)+'</span>'+
         (p.real ? '<span class="pill ok">confirmed</span>'
-                : '<span class="pill wine">check</span>')+'</div></div>'+
+                : '<span class="pill wine">check</span>')+
+        (num(p.cap) > 0 ? '<span class="pill blue">max '+num(p.cap)+'/day</span>' : '')+
+      '</div></div>'+
       '<div class="amt">P'+money(p.rate)+'</div>'+
       '<button class="x" data-del="'+p.id+'" aria-label="Delete">'+
       '<svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>'+
@@ -1422,7 +1818,7 @@ function renderItemList(){
 }
 function editItem(id){
   var p = id ? DB.items.filter(function(x){ return x.id === id; })[0]
-             : {id:null, name:"", sub:"", rate:"", real:true, img:""};
+             : {id:null, name:"", sub:"", rate:"", cap:0, real:true, img:""};
   if(!p) return;
   var opts = [["","— none —"],["bull","Cattle"],["goat","Goat / sheep"],
               ["cleaver","Cleaver"],["hook","Hook"],["temp","Cold room"],
@@ -1432,6 +1828,9 @@ function editItem(id){
     '<div class="fld"><label>Description</label><input id="epSub" value="'+esc(p.sub)+'" placeholder="e.g. Large stock"></div>'+
     '<div class="fld"><label>Rate (BWP) — invoices only</label><input id="epRate" type="number" inputmode="decimal" step="0.01" min="0" value="'+esc(p.rate)+'">'+
       '<p class="hint">Quotas never show money. This rate is used when you turn a quota into an invoice.</p></div>'+
+    '<div class="fld"><label>Daily limit — animals per slaughtering day</label>'+
+      '<input id="epCap" type="number" inputmode="numeric" step="1" min="0" value="'+esc(num(p.cap)||"")+'" placeholder="0 = no limit">'+
+      '<p class="hint">Leave blank or 0 for no limit. When a booking would push a day past this number the app warns you, but still lets you go ahead.</p></div>'+
     '<div class="fld"><label>Icon</label><select id="epImg">'+
       opts.map(function(o){ return '<option value="'+o[0]+'"'+(p.img===o[0]?' selected':'')+'>'+o[1]+'</option>'; }).join('')+
       '</select></div>'+
@@ -1444,7 +1843,7 @@ function editItem(id){
         var nm = $("#epName").value.trim();
         if(!nm){ toast("Item name is required"); return; }
         var rec = {name:nm, sub:$("#epSub").value.trim(),
-                   rate:num($("#epRate").value),
+                   rate:num($("#epRate").value), cap:num($("#epCap").value),
                    real:$("#epReal").checked, img:$("#epImg").value};
         if(p.id) Object.assign(DB.items.filter(function(x){ return x.id===p.id; })[0], rec);
         else DB.items.push(Object.assign({id:uid()}, rec));
