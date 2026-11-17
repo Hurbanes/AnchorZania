@@ -44,6 +44,20 @@ textarea{resize:vertical;min-height:76px}
 input[type=number]{-moz-appearance:textfield}
 input[type=number]::-webkit-outer-spin-button,
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+/* Checkboxes must opt out of the generic input rule above: appearance:none
+   strips the tick entirely and the padding inflates the box. */
+input[type=checkbox],input[type=radio]{
+  -webkit-appearance:auto;appearance:auto;
+  width:22px;height:22px;min-width:22px;flex:none;
+  padding:0;border:0;border-radius:0;background:none;box-shadow:none;
+  accent-color:var(--wine);cursor:pointer
+}
+input[type=checkbox]:focus,input[type=radio]:focus{box-shadow:none;outline:2px solid rgba(122,18,32,.35);outline-offset:2px}
+/* whole row is the tap target */
+.chk{display:flex;align-items:center;gap:11px;margin:0;padding:11px 2px;
+  text-transform:none;letter-spacing:0;font-size:14.5px;font-weight:500;
+  color:var(--ink);cursor:pointer;-webkit-user-select:none;user-select:none}
+.chk:active{opacity:.55}
 label{display:block;font-size:12.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:var(--mute);margin:0 0 6px}
 .hide{display:none !important}
 
@@ -444,8 +458,8 @@ a.btn{text-decoration:none}
         <div class="fld"><label for="bCustPhone">WhatsApp number <span style="text-transform:none;font-weight:400">(optional)</span></label>
           <input id="bCustPhone" type="tel" inputmode="tel" placeholder="2677xxxxxxx" autocomplete="off">
           <p class="hint">Country code, no + or spaces. Leave blank to pick the contact in WhatsApp.</p></div>
-        <label style="display:flex;align-items:center;gap:9px;text-transform:none;font-size:14px;font-weight:500;color:var(--ink);margin:0">
-          <input type="checkbox" id="bSaveCust" checked style="width:19px;height:19px;flex:none;accent-color:var(--wine)">
+        <label class="chk" for="bSaveCust">
+          <input type="checkbox" id="bSaveCust" checked>
           <span id="bSaveCustLab">Save this customer for next time</span>
         </label>
       </div>
@@ -728,8 +742,13 @@ var DEFAULTS = {
            "Please use the invoice number as your payment reference."
   },
   items:[
-    {id:"i1", name:"Cattle Slaughtering Booking",      sub:"Large stock",   rate:350, real:false, img:"bull", cap:10},
-    {id:"i2", name:"Small Stock Slaughtering Booking", sub:"Goats / sheep", rate:120, real:true,  img:"goat", cap:0}
+    {id:"i1", name:"Cattle Slaughtering Booking",      sub:"Large stock",            rate:350, real:false, img:"bull",    cap:10},
+    {id:"i2", name:"Small Stock Slaughtering Booking", sub:"Goats / sheep",          rate:120, real:true,  img:"goat",    cap:0},
+    {id:"i3", name:"Cold Room Storage",                sub:"Per carcass per day",    rate:25,  real:false, img:"temp",    cap:0},
+    {id:"i4", name:"Carcass Cutting & Portioning",     sub:"Per carcass",            rate:80,  real:false, img:"cleaver", cap:0},
+    {id:"i5", name:"Offal Cleaning & Handling",        sub:"Per animal",             rate:45,  real:false, img:"hook",    cap:0},
+    {id:"i6", name:"Delivery",                         sub:"Per trip, within Kanye", rate:200, real:false, img:"truck",   cap:0},
+    {id:"i7", name:"Meat Inspection Certificate",      sub:"Per animal",             rate:15,  real:false, img:"cert",    cap:0}
   ],
   customers:[],
   quotas:[],
@@ -2251,9 +2270,9 @@ function editItem(id){
     '<div class="fld"><label>Icon</label><select id="epImg">'+
       opts.map(function(o){ return '<option value="'+o[0]+'"'+(p.img===o[0]?' selected':'')+'>'+o[1]+'</option>'; }).join('')+
       '</select></div>'+
-    '<label style="display:flex;align-items:center;gap:9px;text-transform:none;font-size:14px;font-weight:500;color:var(--ink);margin:0 0 16px">'+
-      '<input type="checkbox" id="epReal"'+(p.real?' checked':'')+' style="width:19px;height:19px;flex:none;accent-color:var(--wine)">'+
-      'This rate is confirmed</label>'+
+    '<label class="chk" for="epReal" style="margin-bottom:10px">'+
+      '<input type="checkbox" id="epReal"'+(p.real?' checked':'')+'>'+
+      '<span>This rate is confirmed</span></label>'+
     '<button class="btn block" id="epSave">Save item</button>',
     function(){
       $("#epSave").addEventListener("click", function(){
