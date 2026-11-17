@@ -395,7 +395,7 @@ a.btn{text-decoration:none}
           <p class="hint">Country code, no + or spaces. Leave blank to pick the contact in WhatsApp.</p></div>
         <label style="display:flex;align-items:center;gap:9px;text-transform:none;font-size:14px;font-weight:500;color:var(--ink);margin:0">
           <input type="checkbox" id="bSaveCust" checked style="width:19px;height:19px;flex:none;accent-color:var(--wine)">
-          Save this customer for next time
+          <span id="bSaveCustLab">Save this customer for next time</span>
         </label>
       </div>
 
@@ -428,6 +428,8 @@ a.btn{text-decoration:none}
           <div class="fld"><label for="bBrand">Brand certificate</label>
             <input id="bBrand" placeholder="Certificate no." autocomplete="off"></div>
         </div>
+        <div class="fld"><label for="bFarmExt">Extension area</label>
+          <input id="bFarmExt" placeholder="e.g. Kanye West" autocomplete="off"></div>
         <div class="fld"><label for="bFarmPhone">Farmer's phone number</label>
           <input id="bFarmPhone" type="tel" inputmode="tel" placeholder="e.g. 71234567" autocomplete="off"></div>
       </div>
@@ -1043,7 +1045,7 @@ function newDraft(kind){
     saveCust:true,
     date:today(), subject:"",
     items:[],
-    farmer:{name:"",keeper:"",brand:"",phone:""},
+    farmer:{name:"",keeper:"",brand:"",ext:"",phone:""},
     notes:""
   };
 }
@@ -1076,9 +1078,30 @@ function fillBuilder(){
   $("#bFarmName").value  = draft.farmer.name;
   $("#bKeeper").value    = draft.farmer.keeper;
   $("#bBrand").value     = draft.farmer.brand;
+  $("#bFarmExt").value   = draft.farmer.ext || "";
   $("#bFarmPhone").value = draft.farmer.phone;
   $("#bNotes").value   = draft.notes;
+  refreshCustHint();
   renderItems();
+}
+
+/* The saved-customer tick box, made honest: the label always says what
+   tapping Save will actually do, and the box re-arms itself whenever the
+   name stops matching the customer that was picked from the list. */
+function custMatch(){
+  var nm = (draft.cust.name || "").trim().toLowerCase();
+  if(!nm) return null;
+  return DB.customers.filter(function(c){
+    return (c.name || "").trim().toLowerCase() === nm; })[0] || null;
+}
+function refreshCustHint(){
+  var nm = (draft.cust.name || "").trim(), m = custMatch();
+  var lab = $("#bSaveCustLab");
+  if(!lab) return;
+  if(!nm)      lab.textContent = "Save this customer for next time";
+  else if(m)   lab.textContent = "Update " + nm + " in your customers";
+  else         lab.textContent = "Save " + nm + " to your customers";
+  $("#bSaveCust").checked = !!draft.saveCust;
 }
 $("#bCustPick").addEventListener("change", function(){
   var v = this.value;
@@ -1091,11 +1114,12 @@ $("#bCustPick").addEventListener("change", function(){
     $("#bCustName").value  = draft.cust.name;
     $("#bCustAddr").value  = draft.cust.addr;
     $("#bCustPhone").value = draft.cust.phone;
-    $("#bSaveCust").checked = false;
-    draft.saveCust = false;
+    // Stay ticked: any edit to their address or number should write back.
+    draft.saveCust = true;
   } else {
     draft.custId = null;
   }
+  refreshCustHint();
 });
 
 function capLineHTML(i){
@@ -1221,10 +1245,23 @@ $("#btnFromList").addEventListener("click", function(){
   });
 });
 ["bCustName","bCustAddr","bCustPhone","bDate","bSubject","bNotes",
- "bFarmName","bKeeper","bBrand","bFarmPhone"].forEach(function(id){
+ "bFarmName","bKeeper","bBrand","bFarmExt","bFarmPhone"].forEach(function(id){
   $("#"+id).addEventListener("input", function(){
     var v = this.value;
-    if(id === "bCustName")  draft.cust.name  = v;
+    if(id === "bCustName"){
+      draft.cust.name = v;
+      // Typed over a customer picked from the list? That's a different
+      // customer now, so re-arm the tick instead of silently dropping them.
+      if(draft.custId){
+        var picked = DB.customers.filter(function(c){ return c.id === draft.custId; })[0];
+        if(!picked || picked.name.trim().toLowerCase() !== v.trim().toLowerCase()){
+          draft.custId = null;
+          draft.saveCust = true;
+          $("#bCustPick").value = "";
+        }
+      }
+      refreshCustHint();
+    }
     if(id === "bCustAddr")  draft.cust.addr  = v;
     if(id === "bCustPhone") draft.cust.phone = v.replace(/[^0-9]/g,"");
     if(id === "bDate")      draft.date = v;
@@ -1233,10 +1270,14 @@ $("#btnFromList").addEventListener("click", function(){
     if(id === "bFarmName")  draft.farmer.name   = v;
     if(id === "bKeeper")    draft.farmer.keeper = v;
     if(id === "bBrand")     draft.farmer.brand  = v;
+    if(id === "bFarmExt")   draft.farmer.ext    = v;
     if(id === "bFarmPhone") draft.farmer.phone  = v;
   });
 });
-$("#bSaveCust").addEventListener("change", function(){ draft.saveCust = this.checked; });
+$("#bSaveCust").addEventListener("change", function(){
+  draft.saveCust = this.checked;
+  refreshCustHint();
+});
 $("#btnNew").addEventListener("click", function(){ startNew(MODE); });
 $("#btnCancel").addEventListener("click", function(){
   if(draft.items.length && !confirm("Discard this " + draft.kind + "?")) return;
@@ -1276,6 +1317,7 @@ function buildDocObject(){
       name:   draft.farmer.name.trim(),
       keeper: draft.farmer.keeper.trim(),
       brand:  draft.farmer.brand.trim(),
+      ext:    (draft.farmer.ext || "").trim(),
       phone:  draft.farmer.phone.trim()
     },
     notes: draft.notes.trim(),
@@ -1334,7 +1376,8 @@ function docHTML(q){
   var f = q.farmer || {}, kv = [];
   if(isQ){
     kv = [["Farmer / owner", f.name], ["Keeper ID", f.keeper],
-          ["Brand certificate", f.brand], ["Farmer's phone", f.phone]];
+          ["Brand certificate", f.brand], ["Extension area", f.ext],
+          ["Farmer's phone", f.phone]];
   }
   var kvHtml = kv.map(function(r){
     return '<div class="kv"><b>'+esc(r[0])+'</b><span>'+
@@ -1580,6 +1623,7 @@ $("#btnPreview").addEventListener("click", function(){
 /* ---------- save ---------- */
 function persistDoc(){
   if(!shown) return;
+  var custAction = null;
   var isQ = shown.kind === "quota";
   var bucket = isQ ? DB.quotas : DB.invoices;
   if(saved){
@@ -1599,16 +1643,24 @@ function persistDoc(){
     if(draft && draft.saveCust && shown.cust.name){
       var dup = DB.customers.filter(function(c){
         return c.name.toLowerCase() === shown.cust.name.toLowerCase(); })[0];
-      if(dup){ dup.addr = shown.cust.addr || dup.addr; dup.phone = shown.cust.phone || dup.phone; }
-      else DB.customers.push({id:uid(), name:shown.cust.name,
-                              addr:shown.cust.addr, phone:shown.cust.phone});
+      if(dup){
+        dup.addr  = shown.cust.addr  || dup.addr;
+        dup.phone = shown.cust.phone || dup.phone;
+        custAction = "updated";
+      } else {
+        DB.customers.push({id:uid(), name:shown.cust.name,
+                           addr:shown.cust.addr, phone:shown.cust.phone});
+        custAction = "added";
+      }
     }
     saved = true;
     $("#actSave").classList.add("hide");
     $("#actToInv").classList.toggle("hide", !isQ);
   }
   save();
-  toast(shown.number + " saved");
+  toast(shown.number + " saved" +
+        (custAction === "added"   ? " · " + shown.cust.name + " added to customers" :
+         custAction === "updated" ? " · " + shown.cust.name + " updated" : ""));
 }
 $("#actSave").addEventListener("click", function(){
   persistDoc(); renderDocs();
@@ -1675,13 +1727,14 @@ function waText(q){
     L.push("*TOTAL: BWP " + money(q.total) + "*");
   }
   if(isQ){
-    var f = q.farmer || {}, any = f.name || f.keeper || f.brand || f.phone;
+    var f = q.farmer || {}, any = f.name || f.keeper || f.brand || f.ext || f.phone;
     if(any){
       L.push("");
       L.push("*OWNER / FARMER*");
       if(f.name)   L.push("Farmer: " + f.name);
       if(f.keeper) L.push("Keeper ID: " + f.keeper);
       if(f.brand)  L.push("Brand certificate: " + f.brand);
+      if(f.ext)    L.push("Extension area: " + f.ext);
       if(f.phone)  L.push("Phone: " + f.phone);
     }
   }
