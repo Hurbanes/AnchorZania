@@ -742,7 +742,7 @@ var DEFAULTS = {
            "Please use the invoice number as your payment reference."
   },
   items:[
-    {id:"i1", name:"Cattle Slaughtering Booking",      sub:"Large stock",            rate:350, real:false, img:"bull",    cap:10},
+    {id:"i1", name:"Cattle Slaughtering Booking",      sub:"Large stock",            rate:350, real:false, img:"bull",    cap:20},
     {id:"i2", name:"Small Stock Slaughtering Booking", sub:"Goats / sheep",          rate:120, real:true,  img:"goat",    cap:0},
     {id:"i3", name:"Cold Room Storage",                sub:"Per carcass per day",    rate:25,  real:false, img:"temp",    cap:0},
     {id:"i4", name:"Carcass Cutting & Portioning",     sub:"Per carcass",            rate:80,  real:false, img:"cleaver", cap:0},
@@ -780,6 +780,24 @@ function migrate(){
   }catch(e){ return null; }
 }
 
+/* One-time top-up: a device that was set up before the full service list
+   existed only has the two slaughtering items. Add the missing defaults
+   once, by name, without disturbing the user's own edits or re-adding a
+   default they have since deleted. The flag makes it run only once. */
+function topUpItems(d){
+  if(d.settings.itemsSeeded === "full") return false;
+  var have = {}, added = false;
+  (d.items || []).forEach(function(it){ have[(it.name||"").toLowerCase()] = true; });
+  DEFAULTS.items.forEach(function(def){
+    if(!have[def.name.toLowerCase()]){
+      d.items.push(Object.assign({}, def, {id:"i" + uid()}));
+      added = true;
+    }
+  });
+  d.settings.itemsSeeded = "full";
+  return added;
+}
+
 function load(){
   try{
     var raw = localStorage.getItem(KEY);
@@ -794,6 +812,7 @@ function load(){
     d.quotas    = d.quotas    || [];
     d.invoices  = d.invoices  || [];
     d.scales    = d.scales    || [];
+    d._toppedUp = topUpItems(d);   // flag whether we added anything
     return d;
   }catch(e){ return freshDB(); }
 }
@@ -802,6 +821,9 @@ function save(){
   catch(e){ toast("Couldn't save — storage may be full"); }
 }
 DB = load();
+// Persist a one-time top-up straight away, so a user who never saves
+// anything else this session still won't get re-prompted next load.
+if(DB._toppedUp){ delete DB._toppedUp; save(); } else { delete DB._toppedUp; }
 
 /* ---------- helpers ---------- */
 function $(s,r){ return (r||document).querySelector(s); }
