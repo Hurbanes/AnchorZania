@@ -677,6 +677,9 @@ a.btn{text-decoration:none}
     <button class="btn ghost" id="actSave" style="grid-column:1/-1">
       <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg> Save
     </button>
+    <button class="btn sand hide" id="actEdit" style="grid-column:1/-1">
+      <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit
+    </button>
     <button class="btn blue hide" id="actToInv" style="grid-column:1/-1">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15h6M12 12v6"/></svg> Create invoice from this quota
     </button>
@@ -1187,6 +1190,7 @@ function newDraft(kind){
   return {
     kind: kind || "quota",
     id:null, number:null, custId:null, fromQuota:null,
+    invoiceId:null, scaleId:null, createdAt:null,
     cust:{name:"",addr:"",phone:""},
     saveCust:true,
     date:today(), subject:"",
@@ -1560,7 +1564,10 @@ function buildDocObject(){
     },
     notes: draft.notes.trim(),
     sub: sub, vatRate: vatRate, vat: vat, total: sub + vat,
-    createdAt: Date.now()
+    // preserve a quota's links to any invoice / scale report built from it
+    invoiceId: draft.invoiceId || null,
+    scaleId:   draft.scaleId   || null,
+    createdAt: draft.createdAt || Date.now()
   };
 }
 
@@ -1870,7 +1877,9 @@ function showReport(){
   $("#doc").innerHTML = reportHTML(wkAnchor);
   $("#docTitle").textContent = "Booking report";
   $("#actSave").classList.add("hide");
+  $("#actEdit").classList.add("hide");
   $("#actToInv").classList.add("hide");
+  $("#actToScale").classList.add("hide");
   $("#actWa").setAttribute("href",
     "https://wa.me/?text=" + encodeURIComponent(reportWaText(wkAnchor)));
   var avail = Math.min(window.innerWidth, 520) - 28;
@@ -1892,6 +1901,8 @@ function showDoc(q, alreadySaved){
   $("#doc").innerHTML = docHTML(q);
   $("#docTitle").textContent = q.number;
   $("#actSave").classList.toggle("hide", saved);
+  // Edit is offered on any already-saved document.
+  $("#actEdit").classList.toggle("hide", !saved);
   $("#actWa").setAttribute("href", waUrl(q));
   // convert actions: only on a saved quota that hasn't been converted yet
   $("#actToInv").classList.toggle("hide", !(isQ && saved && !q.invoiceId));
@@ -1959,10 +1970,12 @@ function persistDoc(){
   var custAction = null;
   var k = shown.kind, isQ = k === "quota", isS = k === "scale";
   var bucket = isQ ? DB.quotas : isS ? DB.scales : DB.invoices;
-  if(saved){
-    var idx = -1;
-    bucket.forEach(function(x,i){ if(x.id === shown.id) idx = i; });
-    if(idx >= 0) bucket[idx] = shown;
+  // Update in place when this id is already in the bucket (an edit, or a
+  // re-save); otherwise it's genuinely new — push and advance the counter.
+  var idx = -1;
+  bucket.forEach(function(x,i){ if(x.id === shown.id) idx = i; });
+  if(idx >= 0){
+    bucket[idx] = shown;
   } else {
     bucket.push(shown);
     if(isQ && shown.number === quotaNo(DB.settings.qNext)) DB.settings.qNext = num(DB.settings.qNext) + 1;
@@ -1976,24 +1989,26 @@ function persistDoc(){
         else if(!isQ) qq.invoiceId = shown.id;
       });
     }
-    if(draft && draft.saveCust && shown.cust.name){
-      var dup = DB.customers.filter(function(c){
-        return c.name.toLowerCase() === shown.cust.name.toLowerCase(); })[0];
-      if(dup){
-        dup.addr  = shown.cust.addr  || dup.addr;
-        dup.phone = shown.cust.phone || dup.phone;
-        custAction = "updated";
-      } else {
-        DB.customers.push({id:uid(), name:shown.cust.name,
-                           addr:shown.cust.addr, phone:shown.cust.phone});
-        custAction = "added";
-      }
-    }
-    saved = true;
-    $("#actSave").classList.add("hide");
-    $("#actToInv").classList.toggle("hide", !isQ);
-    $("#actToScale").classList.toggle("hide", !isQ);
   }
+  // customer write-back (new or edit) when the tick is on
+  if(draft && draft.saveCust && shown.cust.name){
+    var dup = DB.customers.filter(function(c){
+      return c.name.toLowerCase() === shown.cust.name.toLowerCase(); })[0];
+    if(dup){
+      dup.addr  = shown.cust.addr  || dup.addr;
+      dup.phone = shown.cust.phone || dup.phone;
+      custAction = "updated";
+    } else {
+      DB.customers.push({id:uid(), name:shown.cust.name,
+                         addr:shown.cust.addr, phone:shown.cust.phone});
+      custAction = "added";
+    }
+  }
+  saved = true;
+  $("#actSave").classList.add("hide");
+  $("#actEdit").classList.remove("hide");
+  $("#actToInv").classList.toggle("hide", !(isQ && !shown.invoiceId));
+  $("#actToScale").classList.toggle("hide", !(isQ && !shown.scaleId));
   save();
   toast(shown.number + " saved" +
         (custAction === "added"   ? " · " + shown.cust.name + " added to customers" :
@@ -2026,6 +2041,48 @@ $("#actToInv").addEventListener("click", function(){
   fillBuilder();
   go("build");
   toast("Rates carried from your item list — check them");
+});
+
+/* ---------- edit an already-saved document ---------- */
+function editDoc(doc){
+  // Hand the saved doc back to the builder, keeping its id and number so
+  // saving updates it in place instead of making a new one.
+  fromBuilder = false;
+  draft = newDraft(doc.kind);
+  draft.id        = doc.id;
+  draft.number    = doc.number;
+  draft.fromQuota = doc.fromQuota || null;
+  draft.invoiceId = doc.invoiceId || null;   // keep a quota's links intact
+  draft.scaleId   = doc.scaleId   || null;
+  draft.createdAt = doc.createdAt || null;
+  draft.custId    = null;
+  draft.cust      = {name:doc.cust.name||"", addr:doc.cust.addr||"", phone:doc.cust.phone||""};
+  draft.saveCust  = false;   // the customer already exists; don't rewrite it unasked
+  draft.date      = doc.date || today();
+  draft.subject   = doc.subject || "";
+  var f = doc.farmer || {};
+  draft.farmer = {name:f.name||"", keeper:f.keeper||"", brand:f.brand||"",
+                  ext:f.ext||"", phone:f.phone||""};
+  draft.notes = doc.notes || "";
+  if(doc.kind === "scale"){
+    draft.items = (doc.items||[]).map(function(r){
+      return {tag:r.tag||"", weight:(num(r.weight) ? String(r.weight) : "")};
+    });
+  } else {
+    draft.items = (doc.items||[]).map(function(it){
+      return {name:it.name||"", sub:it.sub||"",
+              qty:(it.qty!=null ? String(it.qty) : ""),
+              rate:(it.rate ? String(it.rate) : ""),
+              arrive:it.arrive||"", slaughter:it.slaughter||""};
+    });
+  }
+  hideDoc();
+  fillBuilder();
+  go("build");
+  toast("Editing " + doc.number);
+}
+$("#actEdit").addEventListener("click", function(){
+  if(shown) editDoc(shown);
 });
 
 /* ---------- quota -> scale report ---------- */
