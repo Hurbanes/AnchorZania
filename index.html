@@ -75,9 +75,9 @@ nav button.on{color:var(--wine)}
 nav button.on svg{stroke-width:2}
 
 /* ============ SEGMENTED ============ */
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--sand);
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--sand);
   border-radius:12px;padding:4px;margin-bottom:16px}
-.seg button{padding:10px 6px;border-radius:9px;font-size:14.5px;font-weight:650;color:var(--mute);transition:all .16s}
+.seg button{padding:10px 4px;border-radius:9px;font-size:14px;font-weight:650;color:var(--mute);transition:all .16s}
 .seg button.on{background:var(--paper);color:var(--wine);box-shadow:0 1px 3px rgba(28,25,23,.12)}
 
 /* ============ PRIMITIVES ============ */
@@ -97,6 +97,7 @@ a.btn{text-decoration:none}
 .btn.sand{background:var(--sand);color:var(--ink);border:1px solid var(--line)}
 .btn.wa{background:#1DA851}
 .btn.blue{background:var(--blue)}
+.btn.green{background:var(--ok)}
 .btn.sm{padding:10px 14px;font-size:14px;width:auto}
 .btn.block+.btn.block{margin-top:9px}
 .pill{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
@@ -140,6 +141,31 @@ a.btn{text-decoration:none}
 .li .calc{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:baseline;font-size:14px}
 .li .calc .k{color:var(--mute);font-size:12.5px}
 .li .calc .v{font-weight:700;font-variant-numeric:tabular-nums}
+/* scale-report rows */
+.wrhead{display:flex;align-items:center;gap:8px;padding:0 4px 6px;
+  font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.wrhead .n{width:24px;text-align:center;flex:none}
+.wrhead .tg{flex:1.3}
+.wrhead .wt{flex:1;text-align:right}
+.wrhead .sp{width:30px;flex:none}
+.wrow{display:flex;align-items:center;gap:8px;background:var(--paper);
+  border:1px solid var(--line);border-radius:var(--r-s);padding:7px 8px;margin-bottom:7px}
+.wrow .n{width:24px;text-align:center;flex:none;font-size:12px;font-weight:700;color:var(--mute)}
+.wrow input{padding:9px 10px;font-size:15px}
+.wrow .tg{flex:1.3;min-width:0}
+.wrow .wt{flex:1;min-width:0;text-align:right;font-variant-numeric:tabular-nums}
+.wrow .rm{width:30px;height:30px;flex:none;border-radius:8px;display:grid;place-items:center;color:var(--mute)}
+.wrow .rm:active{background:rgba(122,18,32,.08);color:var(--wine)}
+.wrow .rm svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round}
+.scaletot{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);
+  padding:4px 15px;margin-top:14px;box-shadow:var(--sh)}
+.scaletot .st{display:flex;justify-content:space-between;align-items:baseline;
+  padding:10px 0;border-bottom:1px solid #F3EDE5;font-size:14.5px}
+.scaletot .st:last-child{border-bottom:0}
+.scaletot .st .k{color:var(--mute);font-size:13px}
+.scaletot .st .v{font-weight:700;font-variant-numeric:tabular-nums}
+.scaletot .st .v small{font-weight:400;color:var(--mute);font-size:12px}
+
 .capbar{margin-top:9px;padding:9px 11px;border-radius:9px;font-size:12.5px;line-height:1.4}
 .capbar.ok{background:#EEF6F1;border:1px solid #CFE6DA;color:#1F6F4A}
 .capbar.full{background:#FFF7E6;border:1px solid #F0DCAE;color:#7A5800}
@@ -329,6 +355,30 @@ a.btn{text-decoration:none}
 .doc.inv .tot .gr{background:var(--blue)}
 .doc.inv .subj{border-left-color:var(--blue)}
 
+/* scale report */
+.doc.scl .dh{border-bottom-color:#1F6F4A}
+.doc.scl .dh .qz .no{color:#1F6F4A}
+.doc.scl thead th{background:#1F6F4A}
+.doc.scl .subj{border-left-color:#1F6F4A}
+.doc .wcols{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;align-items:start}
+.doc .wtab{margin-top:0}
+.doc .wtab thead th{padding:7px 9px;font-size:9px}
+.doc .wtab thead th.n{width:26px}
+.doc .wtab thead th.wt{text-align:right;width:92px}
+.doc .wtab tbody td{padding:6px 9px;font-size:11.5px}
+.doc .wtab tbody td.n{text-align:center;color:#AAA;font-size:10.5px}
+.doc .wtab tbody td.tg{font-weight:650;letter-spacing:.02em}
+.doc .wtab tbody td.wt{text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+.doc .wtab tbody td .dash{color:#CCC;font-weight:400}
+.doc .wsum{display:flex;gap:10px;margin-top:16px}
+.doc .wsum .ws{flex:1;border:1px solid #E6DED4;border-radius:6px;padding:9px 12px}
+.doc .wsum .ws .k{display:block;font-size:9px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:#999;margin-bottom:3px}
+.doc .wsum .ws .v{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}
+.doc .wsum .ws.big{background:#1F6F4A;border-color:#1F6F4A;color:#fff}
+.doc .wsum .ws.big .k{color:rgba(255,255,255,.75)}
+.doc .wsum .ws.big .v{font-size:17px}
+
 /* ============ PRINT ============ */
 @page{size:A4;margin:0}
 @media print{
@@ -363,6 +413,7 @@ a.btn{text-decoration:none}
       <div class="seg">
         <button id="segQ" class="on">Quotas</button>
         <button id="segI">Invoices</button>
+        <button id="segS">Scale</button>
       </div>
 
       <button class="btn block" id="btnNew" style="margin-bottom:16px">
@@ -406,16 +457,20 @@ a.btn{text-decoration:none}
           <input id="bSubject" placeholder="e.g. November bulk booking" autocomplete="off"></div>
       </div>
 
-      <h2 class="sechd">Items</h2>
+      <h2 class="sechd" id="bItemsHd">Items</h2>
       <div id="bItems"></div>
-      <div class="row" style="margin-top:4px">
+      <div class="row" style="margin-top:4px;flex-wrap:wrap">
         <button class="btn ghost sm" id="btnFromList" style="flex:1">
           <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Item list
         </button>
         <button class="btn sand sm" id="btnBlank" style="flex:1">
           <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Blank line
         </button>
+        <button class="btn ghost sm hide" id="btnAdd10" style="flex:1">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add 10 rows
+        </button>
       </div>
+      <div class="scaletot hide" id="bScaleTot"></div>
 
       <!-- farmer block: quota only -->
       <div class="card" id="bFarmer" style="margin-top:16px">
@@ -549,6 +604,15 @@ a.btn{text-decoration:none}
       </div>
 
       <div class="card">
+        <h2>Scale report numbering</h2>
+        <div class="row">
+          <div class="fld"><label for="sSPrefix">Prefix</label><input id="sSPrefix" placeholder="SR-"></div>
+          <div class="fld"><label for="sSNext">Next number</label><input id="sSNext" type="number" inputmode="numeric" min="1"></div>
+        </div>
+        <p class="hint" style="margin:-6px 0 0">Next scale report will be <b id="sSPreview">SR-000001</b></p>
+      </div>
+
+      <div class="card">
         <h2>Your data</h2>
         <p class="hint" style="margin:0 0 13px">Everything lives on this phone only. Clearing your browser or deleting the app erases it — export a backup now and then.</p>
         <button class="btn sand block" id="btnExport">
@@ -602,6 +666,9 @@ a.btn{text-decoration:none}
     <button class="btn blue hide" id="actToInv" style="grid-column:1/-1">
       <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M9 15h6M12 12v6"/></svg> Create invoice from this quota
     </button>
+    <button class="btn green hide" id="actToScale" style="grid-column:1/-1">
+      <svg viewBox="0 0 24 24"><path d="M12 3v3M7 6h10l3.5 9a5 5 0 01-10 0L14 6M7 6L3.5 15a5 5 0 0010 0"/><path d="M9 21h6"/></svg> Create scale report from this quota
+    </button>
   </div>
 </div>
 
@@ -652,6 +719,7 @@ var DEFAULTS = {
     branch:"283567",
     qPrefix:"QT-",  qNext:6,
     iPrefix:"INV-", iNext:1,
+    sPrefix:"SR-",  sNext:1,
     pad:6, valid:30, vatRate:0,
     qTerms:"This quota is approved only once payment has been received.\n"+
            "Failure to deliver the animals on the agreed arrival date does not qualify for a refund.\n"+
@@ -665,7 +733,8 @@ var DEFAULTS = {
   ],
   customers:[],
   quotas:[],
-  invoices:[]
+  invoices:[],
+  scales:[]
 };
 
 var DB;
@@ -705,6 +774,7 @@ function load(){
     d.customers = d.customers || [];
     d.quotas    = d.quotas    || [];
     d.invoices  = d.invoices  || [];
+    d.scales    = d.scales    || [];
     return d;
   }catch(e){ return freshDB(); }
 }
@@ -757,6 +827,20 @@ function padNo(n){
 }
 function quotaNo(n){ return (DB.settings.qPrefix || "QT-")  + padNo(n); }
 function invNo(n){   return (DB.settings.iPrefix || "INV-") + padNo(n); }
+function scaleNo(n){ return (DB.settings.sPrefix || "SR-")  + padNo(n); }
+
+/* Scale-report arithmetic: head counted only where a weight was entered. */
+function weighStats(rows){
+  var n = 0, kg = 0;
+  (rows || []).forEach(function(r){
+    var w = num(r.weight);
+    if(w > 0){ n++; kg += w; }
+  });
+  return {head:n, total:kg, avg: n ? kg / n : 0, rows:(rows||[]).length};
+}
+function kg(v){
+  return num(v).toLocaleString("en-BW",{minimumFractionDigits:2,maximumFractionDigits:2});
+}
 
 /* =====================================================================
    CAPACITY
@@ -841,17 +925,24 @@ function setMode(m){
   MODE = m;
   $("#segQ").classList.toggle("on", m === "quota");
   $("#segI").classList.toggle("on", m === "invoice");
-  $("#btnNewTxt").textContent = m === "quota" ? "New Quota" : "New Invoice";
-  $("#listHd").textContent    = m === "quota" ? "Saved quotas" : "Saved invoices";
-  $("#emptyTxt").innerHTML = m === "quota"
-    ? "No quotas yet.<br>Tap <b>New Quota</b> to book your first one."
-    : "No invoices yet.<br>Make one from a saved quota, or tap <b>New Invoice</b>.";
+  $("#segS").classList.toggle("on", m === "scale");
+  $("#btnNewTxt").textContent =
+    m === "quota" ? "New Quota" : m === "invoice" ? "New Invoice" : "New Scale Report";
+  $("#listHd").textContent =
+    m === "quota" ? "Saved quotas" : m === "invoice" ? "Saved invoices" : "Saved scale reports";
+  $("#emptyTxt").innerHTML =
+    m === "quota"   ? "No quotas yet.<br>Tap <b>New Quota</b> to book your first one." :
+    m === "invoice" ? "No invoices yet.<br>Make one from a saved quota, or tap <b>New Invoice</b>." :
+                      "No scale reports yet.<br>Make one from a saved quota, or tap <b>New Scale Report</b>.";
   renderDocs();
 }
 $("#segQ").addEventListener("click", function(){ setMode("quota"); });
 $("#segI").addEventListener("click", function(){ setMode("invoice"); });
+$("#segS").addEventListener("click", function(){ setMode("scale"); });
 
-function docsOf(m){ return m === "quota" ? DB.quotas : DB.invoices; }
+function docsOf(m){
+  return m === "quota" ? DB.quotas : m === "invoice" ? DB.invoices : DB.scales;
+}
 
 function renderDocs(){
   var ul = $("#dList");
@@ -860,15 +951,26 @@ function renderDocs(){
   });
   $("#dEmpty").classList.toggle("hide", list.length > 0);
   ul.innerHTML = list.map(function(q){
-    var right = MODE === "invoice"
-      ? '<div class="amt">P'+money(q.total)+'</div>'
-      : '<div class="amt" style="font-size:12.5px;color:var(--mute);font-weight:600">'+
-          (q.items.length)+(q.items.length===1?' item':' items')+'</div>';
-    var badge = (MODE === "quota" && q.invoiceId)
-      ? ' <span class="pill blue">invoiced</span>' : '';
+    var right;
+    if(MODE === "invoice"){
+      right = '<div class="amt">P'+money(q.total)+'</div>';
+    } else if(MODE === "scale"){
+      var st = weighStats(q.items);
+      right = '<div class="amt" style="text-align:right">'+kg(st.total)+
+              '<div style="font-size:11.5px;color:var(--mute);font-weight:600">kg · '+
+              st.head+' head</div></div>';
+    } else {
+      right = '<div class="amt" style="font-size:12.5px;color:var(--mute);font-weight:600">'+
+              (q.items.length)+(q.items.length===1?' item':' items')+'</div>';
+    }
+    var badge = "";
+    if(MODE === "quota" && q.invoiceId) badge += ' <span class="pill blue">invoiced</span>';
+    if(MODE === "quota" && q.scaleId)   badge += ' <span class="pill ok">weighed</span>';
+    var title = (MODE === "scale" && q.farmer && q.farmer.name)
+      ? q.farmer.name : (q.cust.name || "(no customer)");
     return '<li data-id="'+q.id+'">'+
       '<div class="mn">'+
-        '<div class="t">'+esc(q.cust.name || "(no customer)")+'</div>'+
+        '<div class="t">'+esc(title)+'</div>'+
         '<div class="s"><span class="txt">'+esc(q.number)+' · '+esc(shortDate(q.date))+'</span>'+badge+'</div>'+
       '</div>'+ right +
       '<button class="x" data-del="'+q.id+'" aria-label="Delete">'+
@@ -886,9 +988,12 @@ function renderDocs(){
   $$("#dList [data-del]").forEach(function(b){
     b.addEventListener("click", function(e){
       e.stopPropagation();
-      if(!confirm("Delete this " + (MODE === "quota" ? "quota" : "invoice") + "?")) return;
-      if(MODE === "quota") DB.quotas   = DB.quotas.filter(function(x){ return x.id !== b.dataset.del; });
-      else                 DB.invoices = DB.invoices.filter(function(x){ return x.id !== b.dataset.del; });
+      var what = MODE === "quota" ? "quota" : MODE === "invoice" ? "invoice" : "scale report";
+      if(!confirm("Delete this " + what + "?")) return;
+      var keep = function(x){ return x.id !== b.dataset.del; };
+      if(MODE === "quota")        DB.quotas   = DB.quotas.filter(keep);
+      else if(MODE === "invoice") DB.invoices = DB.invoices.filter(keep);
+      else                        DB.scales   = DB.scales.filter(keep);
       save(); renderDocs(); toast("Deleted");
     });
   });
@@ -1055,11 +1160,19 @@ function startNew(kind){
   go("build");
 }
 function applyKindToBuilder(){
-  var isQ = draft.kind === "quota";
-  $("#bDateHd").textContent  = isQ ? "Quota details" : "Invoice details";
-  $("#bDateLab").textContent = isQ ? "Quota date"    : "Invoice date";
-  $("#bFarmer").classList.toggle("hide", !isQ);
-  $("#bTotBar").classList.toggle("hide", isQ);
+  var k = draft.kind, isQ = k === "quota", isS = k === "scale";
+  $("#bDateHd").textContent  = isQ ? "Quota details" : isS ? "Weighing details" : "Invoice details";
+  $("#bDateLab").textContent = isQ ? "Quota date"    : isS ? "Weighing date"    : "Invoice date";
+  // The farmer block carries the name the scale ticket is headed with.
+  $("#bFarmer").classList.toggle("hide", !(isQ || isS));
+  $("#bTotBar").classList.toggle("hide", isQ || isS);   // money is invoice-only
+  $("#bItemsHd").textContent = isS ? "Weights" : "Items";
+  $("#btnFromList").classList.toggle("hide", isS);
+  $("#btnBlank").innerHTML = isS
+    ? '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Add animal'
+    : '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Blank line';
+  $("#btnBlank").style.flex = isS ? "1 1 100%" : "1";
+  $("#btnAdd10").classList.toggle("hide", !isS);
 }
 function fillBuilder(){
   applyKindToBuilder();
@@ -1143,7 +1256,80 @@ function refreshCapacity(){
   });
 }
 
+/* A scale report is a long list of two small fields, so it gets a compact
+   row rather than the big card the quota/invoice lines use. */
+function renderWeighRows(){
+  var box = $("#bItems");
+  if(!draft.items.length){
+    box.innerHTML = '<div style="background:var(--paper);border:1px dashed var(--line);'+
+      'border-radius:var(--r);padding:26px 16px;text-align:center;color:var(--mute);'+
+      'font-size:14px;margin-bottom:10px">No animals yet — add one below.</div>';
+    updateScaleTotals(); return;
+  }
+  box.innerHTML =
+    '<div class="wrhead"><span class="n">#</span><span class="tg">Tag no.</span>'+
+      '<span class="wt">Weight (kg)</span><span class="sp"></span></div>' +
+    draft.items.map(function(r,i){
+      return '<div class="wrow" data-i="'+i+'">'+
+        '<span class="n">'+(i+1)+'</span>'+
+        '<input class="tg" data-f="tag" value="'+esc(r.tag||"")+'" placeholder="tag no." autocomplete="off">'+
+        '<input class="wt" data-f="weight" type="number" inputmode="decimal" step="0.01" min="0" '+
+          'value="'+esc(r.weight||"")+'" placeholder="0.00">'+
+        '<button class="rm" data-rm="'+i+'" aria-label="Remove">'+
+          '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>'+
+      '</div>';
+    }).join("");
+
+  $$("#bItems [data-rm]").forEach(function(b){
+    b.addEventListener("click", function(){
+      draft.items.splice(parseInt(b.dataset.rm,10),1);
+      renderWeighRows();
+    });
+  });
+  $$("#bItems .wrow").forEach(function(row){
+    var i = parseInt(row.dataset.i,10);
+    $$("[data-f]", row).forEach(function(inp){
+      inp.addEventListener("input", function(){
+        draft.items[i][inp.dataset.f] = inp.value;
+        updateScaleTotals();
+      });
+      // Enter moves to the next weight box, so a whole batch can be keyed in
+      inp.addEventListener("keydown", function(e){
+        if(e.key !== "Enter") return;
+        e.preventDefault();
+        var rows = $$("#bItems .wrow");
+        var nxt = rows[i+1];
+        if(nxt){ $("[data-f=tag]", nxt).focus(); }
+        else { addWeighRows(1); }
+      });
+    });
+  });
+  updateScaleTotals();
+}
+function updateScaleTotals(){
+  if(draft.kind !== "scale") return;
+  var s = weighStats(draft.items), el = $("#bScaleTot");
+  el.classList.remove("hide");
+  el.innerHTML =
+    '<div class="st"><span class="k">Head weighed</span><span class="v">'+s.head+
+      (s.rows > s.head ? ' <small>of '+s.rows+'</small>' : '')+'</span></div>'+
+    '<div class="st"><span class="k">Total weight</span><span class="v">'+kg(s.total)+' kg</span></div>'+
+    '<div class="st"><span class="k">Average</span><span class="v">'+kg(s.avg)+' kg</span></div>';
+}
+function addWeighRows(n){
+  for(var i = 0; i < n; i++) draft.items.push({tag:"", weight:""});
+  renderWeighRows();
+  setTimeout(function(){
+    var rows = $$("#bItems .wrow");
+    var last = rows[rows.length - 1];
+    if(last){ last.scrollIntoView({behavior:"smooth",block:"center"}); $("[data-f=tag]",last).focus(); }
+  },60);
+}
+$("#btnAdd10").addEventListener("click", function(){ addWeighRows(10); });
+
 function renderItems(){
+  if(draft.kind === "scale"){ renderWeighRows(); return; }
+  $("#bScaleTot").classList.add("hide");
   var box = $("#bItems"), isQ = draft.kind === "quota";
   if(!draft.items.length){
     box.innerHTML = '<div style="background:var(--paper);border:1px dashed var(--line);'+
@@ -1215,6 +1401,7 @@ function updateTotal(){
   $("#bTotal").textContent = "BWP " + money(sub + vat);
 }
 $("#btnBlank").addEventListener("click", function(){
+  if(draft.kind === "scale"){ addWeighRows(1); return; }
   draft.items.push({name:"",sub:"",qty:"1",rate:"",arrive:"",slaughter:""});
   renderItems();
   setTimeout(function(){
@@ -1290,14 +1477,30 @@ $("#btnCancel").addEventListener("click", function(){
 var shown = null, saved = false, zoom = 0.44, fromBuilder = false;
 
 function buildDocObject(){
-  var isQ = draft.kind === "quota";
-  var sub = subtotal();
-  var vatRate = isQ ? 0 : num(DB.settings.vatRate);
+  var k = draft.kind, isQ = k === "quota", isS = k === "scale";
+  var sub = isS ? 0 : subtotal();
+  var vatRate = (isQ || isS) ? 0 : num(DB.settings.vatRate);
   var vat = sub * vatRate / 100;
+  var number = draft.number ||
+    (isQ ? quotaNo(DB.settings.qNext) :
+     isS ? scaleNo(DB.settings.sNext) : invNo(DB.settings.iNext));
+  var items = isS
+    ? draft.items.filter(function(r){
+        return (r.tag||"").trim() || num(r.weight);
+      }).map(function(r){
+        return {tag:(r.tag||"").trim(), weight:num(r.weight)};
+      })
+    : draft.items.filter(function(it){
+        return (it.name||"").trim() || num(it.qty);
+      }).map(function(it){
+        return {name:(it.name||"").trim(), sub:(it.sub||"").trim(),
+                qty:num(it.qty), rate:num(it.rate),
+                arrive:it.arrive||"", slaughter:it.slaughter||""};
+      });
   return {
-    kind: draft.kind,
+    kind: k,
     id: draft.id || uid(),
-    number: draft.number || (isQ ? quotaNo(DB.settings.qNext) : invNo(DB.settings.iNext)),
+    number: number,
     fromQuota: draft.fromQuota || null,
     cust: {
       name:  draft.cust.name.trim(),
@@ -1306,13 +1509,7 @@ function buildDocObject(){
     },
     date: draft.date,
     subject: draft.subject.trim(),
-    items: draft.items.filter(function(it){
-      return (it.name||"").trim() || num(it.qty);
-    }).map(function(it){
-      return {name:(it.name||"").trim(), sub:(it.sub||"").trim(),
-              qty:num(it.qty), rate:num(it.rate),
-              arrive:it.arrive||"", slaughter:it.slaughter||""};
-    }),
+    items: items,
     farmer: {
       name:   draft.farmer.name.trim(),
       keeper: draft.farmer.keeper.trim(),
@@ -1335,7 +1532,89 @@ function companyBlock(){
   return lines.filter(Boolean).join("\n");
 }
 
+/* ---------- scale report document ---------- */
+function scaleHTML(q){
+  var s = DB.settings, f = q.farmer || {}, st = weighStats(q.items);
+  var meta = [["Date", longDate(q.date)]];
+  if(q.fromQuota) meta.push(["Quota ref", q.fromQuota]);
+
+  // two columns of rows, so ~40 animals still fit on one page
+  var rows = q.items.map(function(r,i){
+    return '<tr><td class="n">'+(i+1)+'</td>'+
+      '<td class="tg">'+(r.tag ? esc(r.tag) : '<span class="dash">—</span>')+'</td>'+
+      '<td class="wt">'+(num(r.weight) > 0 ? kg(r.weight) : '<span class="dash">—</span>')+'</td></tr>';
+  });
+  var half = Math.ceil(rows.length / 2);
+  var colA = rows.slice(0, half).join("");
+  var colB = rows.slice(half).join("");
+  var tbl = function(body){
+    return '<table class="wtab"><thead><tr><th class="n">#</th>'+
+      '<th>Tag No.</th><th class="wt">Weight (kg)</th></tr></thead>'+
+      '<tbody>'+body+'</tbody></table>';
+  };
+
+  var kv = [["Farmer / owner", f.name], ["Keeper ID", f.keeper],
+            ["Brand certificate", f.brand], ["Extension area", f.ext],
+            ["Farmer's phone", f.phone]]
+    .map(function(r){
+      return '<div class="kv"><b>'+esc(r[0])+'</b><span>'+
+        (r[1] ? esc(r[1]) : '<span style="color:#C9BFB4;font-weight:400">—</span>')+'</span></div>';
+    }).join("");
+
+  return ''+
+  '<img class="wm" src="'+IMG.emblem+'" alt="">'+
+  '<div class="dh">'+
+    '<img class="mark" src="'+IMG.logo+'" alt="">'+
+    '<div class="co">'+
+      '<div class="nm">'+esc(s.name)+'</div>'+
+      '<div class="tr">'+esc(s.legal)+'</div>'+
+      '<div class="ad">'+esc(companyBlock())+'</div>'+
+    '</div>'+
+    '<div class="qz"><div class="lab" style="font-size:23px">SCALE REPORT</div>'+
+      '<div class="no">'+esc(q.number)+'</div>'+
+      '<div class="mt">'+meta.map(function(m){
+        return esc(m[0])+': '+esc(m[1]); }).join('<br>')+'</div>'+
+    '</div>'+
+  '</div>'+
+
+  '<div class="mid">'+
+    '<div class="bk"><div class="cap">Farmer</div>'+
+      '<div class="nm">'+esc(f.name || "—")+'</div>'+
+    '</div>'+
+    '<div class="bk"><div class="cap">Delivered for</div>'+
+      '<div class="nm" style="font-size:13px">'+esc(q.cust.name || "—")+'</div>'+
+      (q.cust.addr ? '<div class="ad">'+esc(q.cust.addr)+'</div>' : '')+
+    '</div>'+
+  '</div>'+
+
+  (q.subject ? '<div class="subj"><b>Subject:</b> '+esc(q.subject)+'</div>' : '')+
+
+  '<div class="notes" style="margin-top:0;margin-bottom:14px">'+
+    '<div class="nh">Owner details</div><div class="nb">'+kv+'</div></div>'+
+
+  (rows.length
+    ? '<div class="wcols">'+tbl(colA)+(colB ? tbl(colB) : '<div></div>')+'</div>'
+    : '<div style="padding:24px;text-align:center;color:#999;border:1px solid #EDE6DC;border-radius:6px">No animals recorded</div>')+
+
+  '<div class="wsum">'+
+    '<div class="ws"><span class="k">Head weighed</span><span class="v">'+st.head+'</span></div>'+
+    '<div class="ws"><span class="k">Average weight</span><span class="v">'+kg(st.avg)+' kg</span></div>'+
+    '<div class="ws big"><span class="k">Total weight</span><span class="v">'+kg(st.total)+' kg</span></div>'+
+  '</div>'+
+
+  (q.notes ? '<div class="subj" style="margin-top:14px"><b>Notes:</b> '+esc(q.notes)+'</div>' : '')+
+
+  '<div class="sig" style="margin-top:26px">'+
+    '<div class="ln"><div class="bar"></div>Weighed by &amp; date</div>'+
+    '<div class="ln"><div class="bar"></div>Farmer / representative</div>'+
+  '</div>'+
+
+  '<div class="end">'+esc(s.name)+' · Scale report '+esc(q.number)+
+    ' · '+st.head+' head · '+kg(st.total)+' kg</div>';
+}
+
 function docHTML(q){
+  if(q.kind === "scale") return scaleHTML(q);
   var s = DB.settings, isQ = q.kind === "quota";
   var meta = [["Date", longDate(q.date)]];
   if(isQ){
@@ -1567,14 +1846,15 @@ function showDoc(q, alreadySaved){
   shown = q; saved = !!alreadySaved;
   fromBuilder = !alreadySaved;   // previewing something just built
   reportAnchor = null;
-  var isQ = q.kind === "quota";
-  $("#doc").className = "doc" + (isQ ? "" : " inv");
+  var isQ = q.kind === "quota", isS = q.kind === "scale";
+  $("#doc").className = "doc" + (isQ ? "" : isS ? " scl" : " inv");
   $("#doc").innerHTML = docHTML(q);
   $("#docTitle").textContent = q.number;
   $("#actSave").classList.toggle("hide", saved);
   $("#actWa").setAttribute("href", waUrl(q));
-  // convert action: saved quotas that have no invoice yet
+  // convert actions: only on a saved quota that hasn't been converted yet
   $("#actToInv").classList.toggle("hide", !(isQ && saved && !q.invoiceId));
+  $("#actToScale").classList.toggle("hide", !(isQ && saved && !q.scaleId));
   var avail = Math.min(window.innerWidth, 520) - 28;
   zoom = Math.max(0.3, Math.min(1, avail / 794));
   applyZoom();
@@ -1603,6 +1883,18 @@ $("#docZoomOut").addEventListener("click", function(){
 });
 
 $("#btnPreview").addEventListener("click", function(){
+  if(draft.kind === "scale"){
+    if(!draft.farmer.name.trim() && !draft.cust.name.trim()){
+      toast("Enter the farmer's name first"); $("#bFarmName").focus(); return;
+    }
+    var st = weighStats(draft.items);
+    if(!st.head){ toast("Enter at least one weight"); return; }
+    if(st.rows > st.head &&
+       !confirm((st.rows - st.head) + " of " + st.rows +
+                " rows have no weight. They will print as a dash.\n\nCarry on?")) return;
+    showDoc(buildDocObject(), false);
+    return;
+  }
   if(!draft.cust.name.trim()){ toast("Enter a customer name first"); $("#bCustName").focus(); return; }
   if(!draft.items.length){ toast("Add at least one item"); return; }
   // Over the daily limit? Say so plainly, but let the owner decide.
@@ -1624,8 +1916,8 @@ $("#btnPreview").addEventListener("click", function(){
 function persistDoc(){
   if(!shown) return;
   var custAction = null;
-  var isQ = shown.kind === "quota";
-  var bucket = isQ ? DB.quotas : DB.invoices;
+  var k = shown.kind, isQ = k === "quota", isS = k === "scale";
+  var bucket = isQ ? DB.quotas : isS ? DB.scales : DB.invoices;
   if(saved){
     var idx = -1;
     bucket.forEach(function(x,i){ if(x.id === shown.id) idx = i; });
@@ -1633,11 +1925,14 @@ function persistDoc(){
   } else {
     bucket.push(shown);
     if(isQ && shown.number === quotaNo(DB.settings.qNext)) DB.settings.qNext = num(DB.settings.qNext) + 1;
-    if(!isQ && shown.number === invNo(DB.settings.iNext))   DB.settings.iNext = num(DB.settings.iNext) + 1;
-    // link invoice back to its quota
-    if(!isQ && shown.fromQuota){
+    if(isS && shown.number === scaleNo(DB.settings.sNext)) DB.settings.sNext = num(DB.settings.sNext) + 1;
+    if(!isQ && !isS && shown.number === invNo(DB.settings.iNext)) DB.settings.iNext = num(DB.settings.iNext) + 1;
+    // link the new document back to the quota it came from
+    if(shown.fromQuota){
       DB.quotas.forEach(function(qq){
-        if(qq.number === shown.fromQuota) qq.invoiceId = shown.id;
+        if(qq.number !== shown.fromQuota) return;
+        if(isS) qq.scaleId   = shown.id;
+        else if(!isQ) qq.invoiceId = shown.id;
       });
     }
     if(draft && draft.saveCust && shown.cust.name){
@@ -1656,6 +1951,7 @@ function persistDoc(){
     saved = true;
     $("#actSave").classList.add("hide");
     $("#actToInv").classList.toggle("hide", !isQ);
+    $("#actToScale").classList.toggle("hide", !isQ);
   }
   save();
   toast(shown.number + " saved" +
@@ -1691,8 +1987,76 @@ $("#actToInv").addEventListener("click", function(){
   toast("Rates carried from your item list — check them");
 });
 
+/* ---------- quota -> scale report ---------- */
+$("#actToScale").addEventListener("click", function(){
+  if(!shown || shown.kind !== "quota") return;
+  var q = shown;
+  fromBuilder = false;
+  draft = newDraft("scale");
+  draft.fromQuota = q.number;
+  draft.cust = {name:q.cust.name, addr:q.cust.addr, phone:q.cust.phone};
+  draft.saveCust = false;
+  draft.subject = q.subject;
+  draft.farmer = {
+    name:   (q.farmer && q.farmer.name)   || "",
+    keeper: (q.farmer && q.farmer.keeper) || "",
+    brand:  (q.farmer && q.farmer.brand)  || "",
+    ext:    (q.farmer && q.farmer.ext)    || "",
+    phone:  (q.farmer && q.farmer.phone)  || ""
+  };
+  // One blank row per capped beast booked (cattle), ready to key tag + weight.
+  var n = 0;
+  q.items.forEach(function(it){
+    if(capOf(it.name) > 0) n += num(it.qty);
+  });
+  if(!n) q.items.forEach(function(it){ n += num(it.qty); });
+  n = Math.min(Math.round(n), 200);
+  draft.items = [];
+  for(var i = 0; i < n; i++) draft.items.push({tag:"", weight:""});
+  hideDoc();
+  fillBuilder();
+  go("build");
+  toast(n ? n + " row" + (n===1?"":"s") + " ready — key in tag and weight"
+          : "Add animals below");
+});
+
 /* ---------- WhatsApp ---------- */
+function scaleWaText(q){
+  var s = DB.settings, f = q.farmer || {}, st = weighStats(q.items), L = [];
+  L.push("*" + s.name.toUpperCase() + "*");
+  L.push("*SCALE REPORT " + q.number + "*");
+  L.push("Date: " + longDate(q.date));
+  if(q.fromQuota) L.push("Quota ref: " + q.fromQuota);
+  L.push("");
+  if(f.name)   L.push("*Farmer:* " + f.name);
+  if(f.keeper) L.push("Keeper ID: " + f.keeper);
+  if(f.brand)  L.push("Brand certificate: " + f.brand);
+  if(f.ext)    L.push("Extension area: " + f.ext);
+  if(f.phone)  L.push("Phone: " + f.phone);
+  if(q.cust.name) L.push("Delivered for: " + q.cust.name);
+  L.push("");
+  L.push("-------------------------");
+  L.push("   TAG NO.            WEIGHT");
+  q.items.forEach(function(r,i){
+    var tag = (r.tag || "—");
+    while(tag.length < 16) tag += " ";
+    L.push(" " + (i+1) + ". " + tag + (num(r.weight) > 0 ? kg(r.weight) + " kg" : "—"));
+  });
+  L.push("-------------------------");
+  L.push("Head weighed: " + st.head);
+  L.push("Average: " + kg(st.avg) + " kg");
+  L.push("*TOTAL: " + kg(st.total) + " kg*");
+  if(q.notes){ L.push(""); L.push("Notes: " + q.notes); }
+  L.push("");
+  L.push(s.addr.replace(/\n/g, ", "));
+  var tel = [s.phone1, s.phone2].filter(Boolean).join(" / ");
+  if(tel) L.push("Tel: " + tel);
+  if(s.whats) L.push("WhatsApp: " + s.whats);
+  return L.join("\n");
+}
+
 function waText(q){
+  if(q.kind === "scale") return scaleWaText(q);
   var s = DB.settings, isQ = q.kind === "quota", L = [];
   L.push("*" + s.name.toUpperCase() + "*");
   if(s.legal) L.push(s.legal);
@@ -1915,15 +2279,17 @@ var SMAP = {
   sReg:"reg", sVat:"vat", sBank:"bank", sAccName:"accName", sAccType:"accType",
   sAccNo:"accNo", sBranch:"branch",
   sQPrefix:"qPrefix", sQNext:"qNext", sIPrefix:"iPrefix", sINext:"iNext",
+  sSPrefix:"sPrefix", sSNext:"sNext",
   sValid:"valid", sVatRate:"vatRate", sQTerms:"qTerms", sITerms:"iTerms"
 };
-var SNUM = {sQNext:1, sINext:1, sValid:1, sVatRate:1};
+var SNUM = {sQNext:1, sINext:1, sSNext:1, sValid:1, sVatRate:1};
 function fillSettings(){
   Object.keys(SMAP).forEach(function(id){
     var el = $("#"+id); if(el) el.value = DB.settings[SMAP[id]];
   });
   $("#sQPreview").textContent = quotaNo(DB.settings.qNext);
   $("#sIPreview").textContent = invNo(DB.settings.iNext);
+  $("#sSPreview").textContent = scaleNo(DB.settings.sNext);
 }
 Object.keys(SMAP).forEach(function(id){
   var el = $("#"+id); if(!el) return;
@@ -1932,6 +2298,7 @@ Object.keys(SMAP).forEach(function(id){
     DB.settings[k] = SNUM[id] ? num(el.value) : el.value;
     if(k==="qNext"||k==="qPrefix") $("#sQPreview").textContent = quotaNo(DB.settings.qNext);
     if(k==="iNext"||k==="iPrefix") $("#sIPreview").textContent = invNo(DB.settings.iNext);
+    if(k==="sNext"||k==="sPrefix") $("#sSPreview").textContent = scaleNo(DB.settings.sNext);
     save();
   });
 });
@@ -1964,6 +2331,7 @@ $("#fileImport").addEventListener("change", function(){
       DB.customers = DB.customers || [];
       DB.quotas    = DB.quotas    || [];
       DB.invoices  = DB.invoices  || [];
+      DB.scales    = DB.scales    || [];
       save(); setMode("quota"); go("home"); toast("Backup restored");
     }catch(e){ toast("That file isn't a valid backup"); }
   };
