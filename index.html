@@ -2234,8 +2234,10 @@ $("#actWa").addEventListener("click", function(){
 $("#actPdf").addEventListener("click", function(){
   if(!shown && !reportAnchor) return;          // reportAnchor set => weekly report
   if(shown && !saved){ persistDoc(); renderDocs(); }
-  toast("Choose “Save as PDF” in the print screen");
-  setTimeout(function(){ window.print(); }, 450);
+  // Call print() directly inside the tap. A setTimeout here breaks the
+  // user-gesture chain, and browsers then block it as "automatic printing".
+  try{ window.print(); }
+  catch(e){ toast("Couldn't open the print screen on this browser"); }
 });
 
 /* =====================================================================
