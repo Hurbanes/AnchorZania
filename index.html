@@ -348,6 +348,13 @@ a.btn{text-decoration:none}
 .doc .notes .kv b{font-weight:400;color:#888;min-width:112px;flex:none}
 .doc .notes .kv span{font-weight:600;flex:1;min-width:0;word-break:break-word}
 .doc .notes .free{padding:9px 12px;font-size:11.5px;color:#555;line-height:1.55;white-space:pre-line;border-top:1px solid #F0E9DF}
+.doc .destbox{margin-top:16px;border:1.2px solid #C9BFB4;border-radius:6px;overflow:hidden}
+.doc .destbox .desth{text-align:center;font-weight:800;font-size:12.5px;padding:8px 10px;border-bottom:1.2px solid #C9BFB4;color:#1a1a1a;letter-spacing:.02em}
+.doc .destbox .destb{padding:9px 14px;display:grid;grid-template-columns:1fr 1fr;gap:3px 26px}
+.doc .destbox .dkv{font-size:11.5px;line-height:1.5}
+.doc .destbox .dkv b{font-weight:800}
+.doc.inv .destbox,.doc.inv .destbox .desth{border-color:#B9C6D2}
+.doc.scl .destbox,.doc.scl .destbox .desth{border-color:#B7D1C4}
 .doc .ft{margin-top:22px;padding-top:16px;border-top:1px solid #E6DED4;display:flex;gap:30px}
 .doc .ft .bk{flex:1}
 .doc .ft .cap{font-size:9.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#999;margin-bottom:6px}
@@ -596,6 +603,18 @@ a.btn{text-decoration:none}
       </div>
 
       <div class="card">
+        <h2>Location of destination</h2>
+        <p class="hint" style="margin:0 0 13px">Your slaughter facility's registration details. Printed on every quota, invoice and scale report. Leave a field blank to hide it.</p>
+        <div class="row">
+          <div class="fld"><label for="sDestZone">Zone</label><input id="sDestZone"></div>
+          <div class="fld"><label for="sDestDistrict">District</label><input id="sDestDistrict"></div>
+        </div>
+        <div class="fld"><label for="sDestExt">Extension area</label><input id="sDestExt"></div>
+        <div class="fld"><label for="sDestCrush">Crush</label><input id="sDestCrush"></div>
+        <div class="fld"><label for="sDestHolding">Holding</label><input id="sDestHolding"></div>
+      </div>
+
+      <div class="card">
         <h2>Quota numbering &amp; terms</h2>
         <div class="row">
           <div class="fld"><label for="sQPrefix">Prefix</label><input id="sQPrefix" placeholder="QT-"></div>
@@ -734,6 +753,9 @@ var DEFAULTS = {
     accType:"FNB Premier Gold Cheque Account",
     accNo:"63059623736",
     branch:"283567",
+    destZone:"11", destDistrict:"KANYE [11]", destExt:"KANYE",
+    destCrush:"Kanye 0018 - Mareledi Holding Slaughter Facilities",
+    destHolding:"M. Gofamodimo - 0166010",
     qPrefix:"QT-",  qNext:6,
     iPrefix:"INV-", iNext:1,
     sPrefix:"SR-",  sNext:1,
@@ -1580,6 +1602,25 @@ function companyBlock(){
   return lines.filter(Boolean).join("\n");
 }
 
+/* "Location of Destination" block, printed before the banking footer.
+   Hidden entirely when every field is blank. */
+function destRows(){
+  var s = DB.settings;
+  return [["Zone", s.destZone], ["District", s.destDistrict],
+          ["Extension Area", s.destExt], ["Crush", s.destCrush],
+          ["Holding", s.destHolding]].filter(function(r){ return (r[1]||"").trim(); });
+}
+function destBlockHTML(){
+  var rows = destRows();
+  if(!rows.length) return "";
+  return '<div class="destbox">'+
+    '<div class="desth">Location of Destination</div>'+
+    '<div class="destb">'+ rows.map(function(r){
+      return '<div class="dkv"><b>'+esc(r[0])+':</b> '+esc(r[1])+'</div>';
+    }).join("") +'</div>'+
+  '</div>';
+}
+
 /* ---------- scale report document ---------- */
 function scaleHTML(q){
   var s = DB.settings, f = q.farmer || {}, st = weighStats(q.items);
@@ -1651,6 +1692,8 @@ function scaleHTML(q){
   '</div>'+
 
   (q.notes ? '<div class="subj" style="margin-top:14px"><b>Notes:</b> '+esc(q.notes)+'</div>' : '')+
+
+  destBlockHTML() +
 
   '<div class="sig" style="margin-top:26px">'+
     '<div class="ln"><div class="bar"></div>Weighed by &amp; date</div>'+
@@ -1758,7 +1801,7 @@ function docHTML(q){
     (rows || '<tr><td colspan="5" style="color:#999;padding:20px;text-align:center">No items</td></tr>')+
   '</tbody></table>'+
 
-  totals + notesBlock +
+  totals + notesBlock + destBlockHTML() +
 
   '<div class="ft">'+
     '<div class="bk"><div class="cap">Banking details</div>'+bank+'</div>'+
@@ -2145,12 +2188,21 @@ function scaleWaText(q){
   L.push("Average: " + kg(st.avg) + " kg");
   L.push("*TOTAL: " + kg(st.total) + " kg*");
   if(q.notes){ L.push(""); L.push("Notes: " + q.notes); }
+  destWaLines(L);
   L.push("");
   L.push(s.addr.replace(/\n/g, ", "));
   var tel = [s.phone1, s.phone2].filter(Boolean).join(" / ");
   if(tel) L.push("Tel: " + tel);
   if(s.whats) L.push("WhatsApp: " + s.whats);
   return L.join("\n");
+}
+
+function destWaLines(L){
+  var rows = destRows();
+  if(!rows.length) return;
+  L.push("");
+  L.push("*LOCATION OF DESTINATION*");
+  rows.forEach(function(r){ L.push(r[0] + ": " + r[1]); });
 }
 
 function waText(q){
@@ -2201,6 +2253,7 @@ function waText(q){
     }
   }
   if(q.notes){ L.push(""); L.push("Notes: " + q.notes); }
+  destWaLines(L);
   L.push("");
   L.push("*BANKING DETAILS*");
   if(s.bank)    L.push("Bank: " + s.bank);
@@ -2378,6 +2431,8 @@ var SMAP = {
   sPhone1:"phone1", sPhone2:"phone2", sWhats:"whats", sEmail:"email",
   sReg:"reg", sVat:"vat", sBank:"bank", sAccName:"accName", sAccType:"accType",
   sAccNo:"accNo", sBranch:"branch",
+  sDestZone:"destZone", sDestDistrict:"destDistrict", sDestExt:"destExt",
+  sDestCrush:"destCrush", sDestHolding:"destHolding",
   sQPrefix:"qPrefix", sQNext:"qNext", sIPrefix:"iPrefix", sINext:"iNext",
   sSPrefix:"sPrefix", sSNext:"sNext",
   sValid:"valid", sVatRate:"vatRate", sQTerms:"qTerms", sITerms:"iTerms"
